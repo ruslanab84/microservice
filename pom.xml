@@ -9,11 +9,14 @@
     <packaging>pom</packaging>
     <name>springmicroservices</name>
     <description>springmicroservices</description>
+    <modules>
+        <module>customer</module>
+    </modules>
 
     <properties>
         <java.version>17</java.version>
-        <spring.boot.maven.plugin>3.1.5</spring.boot.maven.plugin>
-        <spring.boot.dependenies.version>3.1.5</spring.boot.dependenies.version>
+        <spring.boot.maven.plugin>2.5.7</spring.boot.maven.plugin>
+        <spring.boot.dependenies.version>2.5.7</spring.boot.dependenies.version>
     </properties>
 
     <dependencyManagement>
@@ -23,6 +26,7 @@
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring.boot.dependenies.version}</version>
                 <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -31,7 +35,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.1.5</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
