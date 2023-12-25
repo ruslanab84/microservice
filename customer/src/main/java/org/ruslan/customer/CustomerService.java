@@ -1,9 +1,9 @@
 package org.ruslan.customer;
 
 import lombok.AllArgsConstructor;
+import org.ruslan.amgp.RabbitMQMessageProducer;
 import org.ruslan.clients.fraud.FraudCheckResponse;
 import org.ruslan.clients.fraud.FraudClient;
-import org.ruslan.clients.fraud.notification.NotificationClient;
 import org.ruslan.clients.fraud.notification.NotificationRequest;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     private final CustomerRepository customerRepository;
     private final FraudClient fraudClient;
-    private final NotificationClient notificationClient;
+    private final RabbitMQMessageProducer rabbitMQMessageProducer;
     public void registerCustomer(CustomerRegistrationRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.firstName())
@@ -26,13 +26,18 @@ public class CustomerService {
             throw new IllegalStateException("fraudster");
         }
 
-        notificationClient.sendNotification(
+       NotificationRequest notificationRequest =
                 new NotificationRequest(
                         customer.getId(),
                         customer.getEmail(),
                         String.format("Hi %s welcome to my app", customer.getId())
-                )
+
         );
+
+        rabbitMQMessageProducer.publish(
+                notificationRequest,
+                "internal.exchange",
+                "internal.notification.routing-key");
 
     }
 }

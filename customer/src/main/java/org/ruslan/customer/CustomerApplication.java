@@ -7,7 +7,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 
-@SpringBootApplication
+@SpringBootApplication(
+        scanBasePackages = {
+                "org.ruslan.customer",
+                "org.ruslan.amgp"
+        }
+)
 @EnableEurekaClient
 @EnableFeignClients(
         basePackages = "org.ruslan.clients"
